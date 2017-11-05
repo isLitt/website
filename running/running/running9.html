@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0" />
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body id="map-container">
+    <div id="map"></div>
+    <script>
+
+// [START script-body]
+      var map;
+      var markers = [];
+        var hdc = 0;
+	var hdp = 0;
+	var wt = [];
+        var dist1 = [];
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.794482, lng: -77.861676},
+          zoom: 17
+        });
+
+	  map.addListener('click', function(e) {
+	    placeMarkerAndPanTo(e.latLng, map);
+  	});
+
+
+
+
+
+
+        var script = document.createElement('script');
+        script.setAttribute(
+            'src',
+            'http://personal.psu.edu/aup180/hpsu2017/running/data1.json');
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+
+
+
+
+
+
+
+
+	function placeMarkerAndPanTo(latLng, map) {
+	deleteMarkers();
+
+        function deleteMarkers() {
+		function clearMarkers() {
+			      function setMapOnAll(map) {
+			        for (var i = 0; i < markers.length; i++) {
+          				markers[i].setMap(map);
+        				}
+      				}
+        		setMapOnAll(null);
+      		}
+                clearMarkers();
+                markers = [];
+        }
+
+
+  	var marker = new google.maps.Marker({
+    	position: latLng,
+    	map: map
+  	});
+
+  	map.panTo(latLng);
+	var center = latLng;
+	fiu(center);
+      	function fiu(center) {
+	hdp = 0;
+	hdc = 0;
+        for (var i = 0; i < dist1.length; i++) {
+        var latLng2 = new google.maps.LatLng(dist1[i].lat(), dist1[i].lng());
+	//var latLng1 = new google.maps.LatLng(-36.858317, 174.782284);
+	var latLng1 = new google.maps.LatLng(center.lat(), center.lng());
+	//var latLng2 = new google.maps.LatLng(dist1[0].lat(), dist1[0].lng());
+	//var latLng2 = new google.maps.LatLng(-36.858317, 174.782284);
+	//var lat = new google.maps.LatLng(center.latitude);
+	//var lng = center.longitude;
+        var dist = google.maps.geometry.spherical.computeDistanceBetween(latLng2, latLng1);
+	window.alert(dist);
+	if(dist < 8.0){
+	// To add the marker to the map, call setMap();
+	hdp = hdp+1;
+
+        if(wt[i] > 0.0){
+        // To add the marker to the map, call setMap();
+        hdc = hdc+1;
+        }
+	}
+
+	
+        }
+	//return dist1
+	};
+
+
+
+
+	var ratio = hdc/hdp;
+	var rat;
+	if( hdp == 0.0){
+        	rat = "No one there"
+	}else if (hdp > 0.0){
+		rat = (1 - ratio)
+        }
+  var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">Litt Stats</h1>' + 
+            '<div id="bodyContent">'+
+            '<p><b>Headcount</b> = ' + hdp +
+            '<p><b>Chicks</b> = ' + ratio*100 + 'percentage' +
+            '<p><b>Dudes</b> = ' + rat*100 + 'percentage' +
+            '<p><b>Cover charge</b> = ' + 2.0 + 'Dollars' +
+            '<p><b>Approx. Line time</b> = ' + '5 mins' +
+            '<p><b>Happy Hour</b> = ' +
+            '</div>'+
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+          infowindow.open(map, marker);
+	}
+
+      function eqfeed_callback(results) {
+        var heatmapData = [];
+        for (var i = 0; i < results.features.length; i++) {
+          var weights = results.features[i].properties.prop1;
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = {location: new google.maps.LatLng(coords[1], coords[0]), weight: weights};
+          var latLng1 = new google.maps.LatLng(coords[1], coords[0]);
+          //var weight = new google.maps.weight(weights[0]);
+          heatmapData.push(latLng);
+		//hdc = hdc+1;
+	dist1.push(latLng1)		
+	wt.push(weights)		
+        }
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatmapData,
+          dissipating: true,
+          map: map
+        });
+      }
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe9MNgHMPh2L1EGgEWnwyouXFKiAQCeoI&libraries=visualization,geometry&callback=initMap"></script>
+  </body>
+</html>

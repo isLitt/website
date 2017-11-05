@@ -1,0 +1,63 @@
+eqfeed_callback({ "type": "FeatureCollection",
+    "features": [
+      { "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-77.861627, 40.793983]
+          },
+          "properties": {
+            "prop1": 0.0
+          }
+        },
+      { "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates":
+            [-77.861769, 40.794109]
+          },
+        "properties": {
+          "prop0": "value0",
+          "prop1": 1.0
+          }
+        },
+      { "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates":
+            [-77.859793, 40.795422]
+          },
+        "properties": {
+          "prop1": 1.0
+          }
+        },      { "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates":
+            [-77.860576, 40.794849]
+          },
+        "properties": {
+          "prop0": "value0",
+          "prop1": 1.0
+          }
+        },      { "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates":
+            [-77.861769, 40.794109]
+          },
+        "properties": {
+          "prop0": "value0",
+          "prop1": 0.0
+          }
+        },
+      { "type": "Feature",
+         "geometry": {
+           "type": "Point",
+           "coordinates": [-77.860519, 40.793751]
+         },
+         "properties": {
+           "prop1": 0.0
+           }
+	}
+       ]
+     });

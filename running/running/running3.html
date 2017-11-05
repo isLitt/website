@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0" />
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body id="map-container">
+    <div id="map"></div>
+    <script>
+
+// [START script-body]
+      var map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.794482, lng: -77.861676},
+          zoom: 17
+        });
+
+        // Get the earthquake data (JSONP format)
+        // This feed is a copy from the USGS feed, you can find the originals here:
+        //   http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+        var script = document.createElement('script');
+        script.setAttribute(
+            'src',
+            'http://personal.psu.edu/aup180/hpsu2017/running/data1.json');
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+
+       var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">Litt Statistics</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Head count</b><b>people</b>' +
+            '<p><b>Chicks/Dudes</b><b>Ayers Rock</b>' +
+            '<p><b>Cover charge</b><b>Ayers Rock</b>' +
+            '<p><b>Average line time</b><b>Ayers Rock</b>' +
+            '</div>'+
+            '</div>';
+
+
+var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
+
+
+      // Defines the callback function referenced in the jsonp file.
+
+      function eqfeed_callback(results) {
+        var heatmapData = [];
+        for (var i = 0; i < results.features.length; i++) {
+          var weights = results.features[i].properties.prop1;
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = {location: new google.maps.LatLng(coords[1], coords[0]), weight: weights};
+          //var weight = new google.maps.weight(weights[0]);
+          heatmapData.push(latLng);
+        }
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatmapData,
+          dissipating: true,
+          map: map
+        });
+      }
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDe9MNgHMPh2L1EGgEWnwyouXFKiAQCeoI&libraries=visualization&callback=initMap"></script>
+  </body>
+</html>
